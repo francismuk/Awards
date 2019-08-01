@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from .models import Subscriber, Image, Location, Category, Comments, Profile
 from .forms import SubscribeForm, NewPostForm, CommentForm
 from .email import send_welcome_email
+from django.contrib.auth.decorators import login_required.
 
 # Create your views here.
 
