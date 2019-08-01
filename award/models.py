@@ -76,7 +76,7 @@ from tinymce.models import HTMLField
 class Image(models.Model):
     class Meta:
         ordering = ('-post_date',)
-    image = models.ImageField(upload_to = 'image/',)
+    image = models.ImageField(upload_to = 'images/',)
     name = models.CharField(max_length=60)
     post = HTMLField()
     poster = models.ForeignKey(User,on_delete=models.CASCADE, blank=True, related_name="images")
