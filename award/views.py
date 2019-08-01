@@ -4,6 +4,9 @@ from .models import Subscriber, Image, Location, Category, Comments, Profile
 from .forms import SubscribeForm, NewPostForm, CommentForm
 from .email import send_welcome_email
 from django.contrib.auth.decorators import login_required
+import datetime as dt
+from django.contrib.auth.models import User
+
 
 # Create your views here.
 
@@ -38,15 +41,16 @@ def new_project(request):
     if request.method == 'POST':
         form = NewPostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.poster = current_user
-            post.save()
+            image = form.save(commit=False)
+            image.poster = current_user
+            image.save()
         return redirect('index')
 
     else:
         form = NewPostForm()
     return render(request, 'new_post.html', {"form": form})
 
+@login_required(login_url='/accounts/login/')
 def search_projects(request):
     if 'image' in request.GET and request.GET["project"]:
         search_term = request.GET.get("image")
@@ -58,3 +62,30 @@ def search_projects(request):
     else:
         message = "You haven't searched for any person"
         return render(request, 'search.html', {"message": message})
+    
+def single_post(request, id):
+
+    try:
+        image = Image.objects.get(pk=id)
+
+    except DoesNotExist:
+        raise Http404()
+
+    current_user = request.user
+    comments = Comments.get_comment(Comments, id)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.cleaned_data['comment']
+
+            commentt = Comments()
+            commentt.image = image
+            commentt.user = current_user
+            commentt.comment = comment
+            commentt.save()
+
+    else:
+        form = CommentForm()
+
+    return render(request, 'single.html', {"image": image,'form': form,'comments': comments})
