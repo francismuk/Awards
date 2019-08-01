@@ -83,6 +83,7 @@ class Image(models.Model):
     location = models.ForeignKey(Location, blank=True)
     category = models.ForeignKey(Category,blank=True)
     post_date = models.DateTimeField(auto_now_add=True)
+    project_url=models.URLField(max_length=250)
     comments= models.TextField(blank=True)
     
     def save_image(self):
@@ -98,6 +99,11 @@ class Image(models.Model):
     def get_all_images(cls):
         all_images = Image.objects.all()
         return all_images
+    
+    @classmethod
+    def search_images(cls, search_term):
+        projects = cls.objects.filter(title__icontains=search_term)
+        return projects
         
     @classmethod
     def get_image_id(cls, id):
