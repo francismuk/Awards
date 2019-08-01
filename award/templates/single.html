@@ -1,0 +1,78 @@
+{%extends 'base.html'%}
+{% load static %}
+{% load bootstrap3 %}
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Gallery</title>
+  {{ form.media }}
+</head>
+{% block content %}
+{{block.super}}
+
+
+
+<div class="container">
+    <div class="row">
+
+<div class="col-md-4" style="width:40rem;;">
+    <small class="card-text"><a href="#">{{image.poster}}</a></small>
+    <br>
+    <small class="card-text">{{image.location}}</small>
+  <img class="img-responsive" src="{{image.image.url}}" alt="Card image cap" class="img-fluid">
+
+</div>
+
+<div class="col-md-3">
+<form id="like" method="POST" action="/posts/{{image.id}}/preference/1/">
+{% csrf_token %}
+<input type="hidden">
+</form>
+    
+      <button class="btn btn-sm btn-success">Like</button>
+      <button class="btn btn-sm btn-danger">Dislike</button>
+      {% autoescape on %}
+    <p class="card-text" style="font-family: 'Oswald', sans-serif;"><strong>Caption:</strong>
+      {% endautoescape %}
+      <br>
+      {{image.post | safe}}</p>
+    <p class="card-text" style="font-family: 'Oswald', sans-serif;"><small class="text-muted">Posted by {{image.user}}</small></p>
+
+  <div class="card border-secondary">
+     <div class="card-header">
+     <h5 style="font-family: 'Oswald', sans-serif;"> <strong> Image Comments </strong></h5>
+     <hr>
+       </div>
+
+
+     <div class="card-body text-primary" style="float: left; width:270px; height:260px; overflow: scroll;">
+
+       {% for comment in comments %}
+       <div style="color: black;">
+       <p>
+        <a href="#"> {{ comment.user }}</a> : <small> {{ comment.comment }} </small></p>
+      </p>
+      </div>
+       {% endfor%}
+
+     </div>
+   </div>
+</div>
+
+
+<div class="col-md-4">
+  <h3 style="font-family: 'Oswald', sans-serif;">Add your comment</h3>
+  <hr>
+  <form action=""  method="post">
+    {%csrf_token%} {% bootstrap_form form %}
+      <input type="submit" class="btn btn-primary" value="Post">
+  </form>
+  <hr>
+</div>
+</div>
+</div>
+
+{% endblock %}
