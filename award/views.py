@@ -14,11 +14,8 @@ def index(request):
     title = 'Home'
     current_user = request.user
 
-    if request.GET.get('location'):
-        images = Image.filter_by_location(request.GET.get('location'))
-
-    else:
-        images = Image.objects.all()
+    
+    images = Image.objects.all()
 
     if request.method == 'POST':
         form = SubscribeForm(request.POST)
@@ -48,7 +45,7 @@ def new_project(request):
 
     else:
         form = NewPostForm()
-    return render(request, 'new_post.html', {"form": form})
+    return render(request, 'registration/new_post.html', {"form": form})
 
 @login_required(login_url='/accounts/login/')
 def search_projects(request):
