@@ -1,4 +1,4 @@
-{%extends "base.html"%} {% load bootstrap3 %} {%load static%} {% load staticfiles %}
+{%extends "registration/base.html"%} {% load bootstrap3 %} {%load static%} {% load staticfiles %}
 
 {% block content %}
 <head>
@@ -19,7 +19,7 @@
     {%csrf_token%}
 
     {% bootstrap_form form%}
-    <input type="submit" class="btn btn-success btn-lg" value="Post">
+    <input type="submit" class="btn btn-success btn-lg"  value="Post">
   </form>
 
    {% block scripts %}
