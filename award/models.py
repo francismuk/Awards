@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from tinymce.models import HTMLField
 
 import datetime as dt
 # Create your models here.
@@ -72,12 +73,11 @@ class Location(models.Model):
     def __str__(self):
         return self.image_location
 
-from tinymce.models import HTMLField
 class Image(models.Model):
     class Meta:
         ordering = ('-post_date',)
-    image = models.ImageField(upload_to = 'images/',)
-    name = models.CharField(max_length=60)
+    image = models.ImageField(upload_to = 'image/',)
+    title = models.CharField(max_length=60)
     post = HTMLField()
     poster = models.ForeignKey(User,on_delete=models.CASCADE, blank=True, related_name="images")
     location = models.ForeignKey(Location, blank=True)
