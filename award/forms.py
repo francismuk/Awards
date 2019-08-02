@@ -9,10 +9,7 @@ class NewPostForm(forms.ModelForm):
     class Meta:
         model = Image
         exclude = ['poster', 'post_date']
-        widgets = {
-            'tags': forms.CheckboxSelectMultiple(),
-  
-        }
+        
         
 class CommentForm(forms.ModelForm):
     class Meta:
