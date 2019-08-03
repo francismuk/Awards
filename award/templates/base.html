@@ -15,7 +15,7 @@
   {% block styles %}
     {% bootstrap_css %}
     <link rel="shortcut icon" href="{% static 'images/instagram.ico' %}" />
-    <link rel="stylesheet" href="{% static 'css/post3.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Satisfy&display=swap" rel="stylesheet">
 
@@ -39,6 +39,7 @@
 
     {% block scripts %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{%static 'js/base.js'%}"></script>
      {% bootstrap_javascript %}
     {% endblock %}
 </body>
