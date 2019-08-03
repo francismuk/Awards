@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from .models import Subscriber, Image, Location, Category, Comments, Profile
 from .forms import SubscribeForm, NewPostForm, CommentForm
 from .email import send_welcome_email
 from django.contrib.auth.decorators import login_required
 import datetime as dt
 from django.contrib.auth.models import User
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializer import ImageSerializer, ProfileSerializer
+from rest_framework import status
 
 
 # Create your views here.
@@ -16,16 +20,15 @@ def index(request):
 
     
     images = Image.objects.all()
+    if request.method == 'POST':   
+        name = request.POST.get('your_name')
+        email = request.POST.get('email')
 
-    if request.method == 'POST':
-        form = SubscribeForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            recipient = Subscriber(name=name, email=email)
-            recipient.save()
-            send_welcome_email(name, email)
-            HttpResponseRedirect('index', {"name": name})
+        recipient = NewsLetterRecipients(name=name, email=email)
+        recipient.save()
+        send_welcome_email(name, email)
+        data = {'success': 'You have been successfully added to mailing list'}
+        return JsonResponse(data)
 
     else:
         form = SubscribeForm()
@@ -86,3 +89,30 @@ def single_post(request, id):
         form = CommentForm()
 
     return render(request, 'single.html', {"image": image,'form': form,'comments': comments})
+
+class Projects(APIView):
+    def get(self, request, format = None):
+        all_projects = Project.objects.all()
+        serializers = ProjectSerializer(all_projects, many = True)
+        return Response(serializers.data)
+
+
+    def post(self, request, format=None):
+        serializers = ProjectSerializer(data=request.data)
+        permission_classes = (IsAdminOrReadOnly,)
+
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status= status.HTTP_201_CREATED)
+
+        return Response(serializers.errors, status = status.HTTP_400_BAD_REQUEST)
+    
+def newsletter(request):
+    name = request.POST.get('your_name')
+    email= request.POST.get('email')
+
+    recipient= Subscriber(name= name, email =email)
+    recipient.save()
+    send_welcome_email(name, email)
+    data= {'success': 'You have been successfully added to the newsletter mailing list'}
+    return JsonResponse(data)
