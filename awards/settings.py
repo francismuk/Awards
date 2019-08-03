@@ -65,6 +65,8 @@ INSTALLED_APPS = [
     'award',
     'bootstrap3',
     'tinymce',
+    'rest_framework.authtoken',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -85,6 +87,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'awards.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
 TEMPLATES = [
     {
