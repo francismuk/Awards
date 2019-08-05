@@ -67,7 +67,7 @@ To run the tests for the class files:
     
 
 ## Known bugs
-Like and Follow functionality do not work
+Review and Profile functionality do not work
 
 ## Technologies used
     - Python 3.6
